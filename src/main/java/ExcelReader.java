@@ -3,6 +3,7 @@ import org.apache.poi.xssf.usermodel.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -12,6 +13,8 @@ import java.util.Date;
 public class ExcelReader {
     private XSSFWorkbook workbook;
     private FileInputStream inputStream;
+    private ArrayList<Bug> bugs = new ArrayList<Bug>();
+    private ArrayList<Enhancement> enhancements = new ArrayList<Enhancement>();
 
     public ExcelReader(String fileName) throws IOException {
         inputStream = new FileInputStream(new File(fileName));
@@ -25,32 +28,70 @@ public class ExcelReader {
         super.finalize();
     }
 
-    public void print() {
+    public void parse_input() {
         XSSFSheet sheet = workbook.getSheetAt(0);
         for (int rowNum = 1; rowNum < sheet.getPhysicalNumberOfRows(); rowNum++) {
             XSSFRow nextRow = sheet.getRow(rowNum);
-            int issueNumber;
-            if (nextRow.getCell(0).getCellType() == XSSFCell.CELL_TYPE_STRING) {
-                issueNumber = -1;
-            } else {
-                issueNumber = (int)nextRow.getCell(0).getNumericCellValue();
-            }
-            String issueDescription = nextRow.getCell(1, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK).toString();
-            String issueTypeOrSeverity = nextRow.getCell(2, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK).toString();
-            Date issueCreationDate;
-            if (nextRow.getCell(3, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK).getCellType() == XSSFCell.CELL_TYPE_STRING) {
-                issueCreationDate = new Date(0);
-            } else {
-                issueCreationDate = nextRow.getCell(3).getDateCellValue();
-            }
-            Date issueResolveDate;
-            if (nextRow.getCell(4, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK).getCellType() == XSSFCell.CELL_TYPE_STRING) {
-                issueResolveDate = new Date(0);
-            } else {
-                issueResolveDate = nextRow.getCell(4).getDateCellValue();
-            }
-            System.out.println(String.format("%d - %s - %s - %s - %s",
-                    issueNumber, issueDescription, issueTypeOrSeverity, issueCreationDate, issueResolveDate));
+            int issueNumber = getIssueNumber(nextRow);
+            String issueDescription = getIssueDescription(nextRow);
+            String issueTypeOrSeverity = getTypeOrSeverity(nextRow);
+            Date issueCreationDate = getIssueCreationDate(nextRow);
+            Date issueResolveDate = getIssueResolveDate(nextRow);
+            add_issue_to_list(issueNumber, issueDescription, issueTypeOrSeverity, issueCreationDate, issueResolveDate);
         }
+    }
+
+    public ArrayList<Bug> getBugs() {
+        return bugs;
+    }
+
+    public ArrayList<Enhancement> getEnhancements() {
+        return enhancements;
+    }
+
+    private void add_issue_to_list(int issueNumber, String issueDescription, String issueTypeOrSeverity, Date issueCreationDate, Date issueResolveDate) {
+        if (Bug.Severity.valueOf(issueTypeOrSeverity) == Bug.Severity.enhancement) {
+            enhancements.add(new Enhancement(issueNumber, issueDescription, issueCreationDate, issueResolveDate));
+        } else {
+            bugs.add(new Bug(issueNumber, issueDescription, issueCreationDate, issueResolveDate, issueTypeOrSeverity));
+        }
+    }
+
+    private Date getIssueResolveDate(XSSFRow nextRow) {
+        Date issueResolveDate;
+        if (nextRow.getCell(4, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK).getCellType() == XSSFCell.CELL_TYPE_STRING) {
+            issueResolveDate = new Date(0);
+        } else {
+            issueResolveDate = nextRow.getCell(4).getDateCellValue();
+        }
+        return issueResolveDate;
+    }
+
+    private Date getIssueCreationDate(XSSFRow nextRow) {
+        Date issueCreationDate;
+        if (nextRow.getCell(3, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK).getCellType() == XSSFCell.CELL_TYPE_STRING) {
+            issueCreationDate = new Date(0);
+        } else {
+            issueCreationDate = nextRow.getCell(3).getDateCellValue();
+        }
+        return issueCreationDate;
+    }
+
+    private String getTypeOrSeverity(XSSFRow nextRow) {
+        return nextRow.getCell(2, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK).toString();
+    }
+
+    private String getIssueDescription(XSSFRow nextRow) {
+        return nextRow.getCell(1, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK).toString();
+    }
+
+    private int getIssueNumber(XSSFRow nextRow) {
+        int issueNumber;
+        if (nextRow.getCell(0).getCellType() == XSSFCell.CELL_TYPE_STRING) {
+            issueNumber = -1;
+        } else {
+            issueNumber = (int)nextRow.getCell(0).getNumericCellValue();
+        }
+        return issueNumber;
     }
 }
