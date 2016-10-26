@@ -5,13 +5,24 @@ import java.util.Date;
  */
 public class Bug extends Issue {
     public enum Severity {
-        enhancement, trivial, minor, normal, major, critical
+        enhancement, trivial, minor, normal, major, critical,
+        blocker, none;
+
+        public static Severity getSeverityFromString(String str) {
+            Severity severityLevel;
+            try {
+                severityLevel = Severity.valueOf(str);
+            } catch (IllegalArgumentException e) {
+                severityLevel = Severity.none;
+            }
+            return severityLevel;
+        }
     }
     Severity severityLevel;
 
     public Bug(int issueNumber, String description, Date timeCreated, Date timeResolved, String severityLevel) {
         super(issueNumber, description, timeCreated, timeResolved);
-        this.severityLevel = Severity.valueOf(severityLevel);
+        this.severityLevel = Severity.getSeverityFromString(severityLevel);
     }
 
     @Override
