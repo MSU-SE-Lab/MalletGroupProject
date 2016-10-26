@@ -24,7 +24,7 @@ public class UILoader extends Application {
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.out.println("Hello!");
+                System.out.println("lolwut");
             }
         });
 
