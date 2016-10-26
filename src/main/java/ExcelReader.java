@@ -50,7 +50,7 @@ public class ExcelReader {
     }
 
     private void add_issue_to_list(int issueNumber, String issueDescription, String issueTypeOrSeverity, Date issueCreationDate, Date issueResolveDate) {
-        if (Bug.Severity.valueOf(issueTypeOrSeverity) == Bug.Severity.enhancement) {
+        if (Bug.Severity.getSeverityFromString(issueTypeOrSeverity) == Bug.Severity.enhancement) {
             enhancements.add(new Enhancement(issueNumber, issueDescription, issueCreationDate, issueResolveDate));
         } else {
             bugs.add(new Bug(issueNumber, issueDescription, issueCreationDate, issueResolveDate, issueTypeOrSeverity));
