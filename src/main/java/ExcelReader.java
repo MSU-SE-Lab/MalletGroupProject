@@ -19,6 +19,7 @@ public class ExcelReader {
     public ExcelReader(String fileName) throws IOException {
         inputStream = new FileInputStream(new File(fileName));
         workbook = new XSSFWorkbook(inputStream);
+        parse_input();
     }
 
     @Override
