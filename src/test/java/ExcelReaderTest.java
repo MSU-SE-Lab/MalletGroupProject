@@ -5,8 +5,8 @@ import org.junit.Test;
  */
 public class ExcelReaderTest {
     @Test
-    public void print_all_data() throws Exception {
+    public void read_all_data() throws Exception {
         ExcelReader reader = new ExcelReader("Firefox_MasterFile_4214Fall2016.xlsx");
-        reader.parse_input();
+        assert reader.getEnhancements().size() == 4260;
     }
 }
