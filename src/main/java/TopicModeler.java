@@ -8,13 +8,11 @@ import java.io.File;
 import java.util.*;
 
 public class TopicModeler {
-
-    public static void main(String[] args) throws Exception {
-
+    public void main() throws Exception {
         ArrayList<Pipe> topicList = new ArrayList<Pipe>();
         topicList.add(new CharSequenceLowercase());
         topicList.add(new CharSequence2TokenSequence());
-        topicList.add( new TokenSequenceRemoveStopwords(new File("/Users/Blake/JavaProjects/src/en.txt"),
+        topicList.add( new TokenSequenceRemoveStopwords(new File(TopicModeler.class.getResource("stoplists/en.txt").toURI()),
                 "UTF-8", false, false, false));
         topicList.add( new TokenSequence2FeatureSequence());
         InstanceList instances = new InstanceList(new SerialPipes(topicList));
