@@ -1,24 +1,16 @@
 import cc.mallet.pipe.*;
-import cc.mallet.pipe.iterator.SimpleFileLineIterator;
 import cc.mallet.topics.ParallelTopicModel;
 import cc.mallet.topics.TopicInferencer;
 import cc.mallet.types.*;
 
-import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.*;
 
 public class TopicModeler {
-    public void main() throws Exception {
-        ArrayList<Pipe> topicList = new ArrayList<Pipe>();
-        topicList.add(new CharSequenceLowercase());
-        topicList.add(new CharSequence2TokenSequence());
-        topicList.add( new TokenSequenceRemoveStopwords(new File(TopicModeler.class.getResource("stoplists/en.txt").toURI()),
-                "UTF-8", false, false, false));
-        topicList.add( new TokenSequence2FeatureSequence());
-        InstanceList instances = new InstanceList(new SerialPipes(topicList));
-
-        File toParse = new File("/Users/Blake/Desktop/shiloh.txt");
-        instances.addThruPipe(new SimpleFileLineIterator(toParse));
+    public void main(String fileName) throws Exception {
+        InstanceList instances = buildPipe();
+        addEnhancementsThruPipe(instances, fileName);
 
         int numTopics = 5;
         ParallelTopicModel model = new ParallelTopicModel(numTopics, 1.0, 0.01);
@@ -80,5 +72,21 @@ public class TopicModeler {
         TopicInferencer inferencer = model.getInferencer();
         double[] testProbabilities = inferencer.getSampledDistribution(testing.get(0), 10, 1, 5);
         System.out.println("0\t" + testProbabilities[0]);
+    }
+
+    private void addEnhancementsThruPipe(InstanceList instances, String fileName) throws IOException {
+        ExcelReader excelReader = new ExcelReader(fileName);
+        for (Enhancement enhancement : excelReader.getEnhancements()) {
+            instances.addThruPipe(enhancement);
+        }
+    }
+
+    private InstanceList buildPipe() throws URISyntaxException {
+        ArrayList<Pipe> topicList = new ArrayList<Pipe>();
+        topicList.add(new CharSequenceLowercase());
+        topicList.add(new CharSequence2TokenSequence());
+        topicList.add( new TokenSequenceRemoveStopwords(false, false));
+        topicList.add( new TokenSequence2FeatureSequence());
+        return new InstanceList(new SerialPipes(topicList));
     }
 }
