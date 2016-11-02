@@ -70,8 +70,12 @@ public class TopicModeler {
         ArrayList<Pipe> topicList = new ArrayList<Pipe>();
         topicList.add(new CharSequenceLowercase());
         topicList.add(new CharSequence2TokenSequence());
-        topicList.add( new TokenSequenceRemoveStopwords(false, false));
-        topicList.add( new TokenSequence2FeatureSequence());
+        topicList.add(new TokenSequenceRemoveNonAlpha());
+        TokenSequenceRemoveStopwords tsrs = new TokenSequenceRemoveStopwords(false, false);
+        String[] stopWords = {"quot"};
+        tsrs.addStopWords(stopWords);
+        topicList.add(tsrs);
+        topicList.add(new TokenSequence2FeatureSequence());
         return new InstanceList(new SerialPipes(topicList));
     }
     private  ParallelTopicModel createTopicModel(int numTopics, InstanceList instances) throws Exception {
