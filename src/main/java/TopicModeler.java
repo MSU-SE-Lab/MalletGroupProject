@@ -2,22 +2,23 @@ import cc.mallet.pipe.*;
 import cc.mallet.topics.ParallelTopicModel;
 import cc.mallet.topics.TopicInferencer;
 import cc.mallet.types.*;
-import net.didion.jwnl.data.Exc;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URISyntaxException;
 import java.util.*;
 
-import static java.lang.System.out;
-
 public class TopicModeler {
+    private InstanceList instances;
+    private int numTopics = 5;
 
-    public void main(String fileName) throws Exception {
-        int numTopics = 5;
+    public TopicModeler() throws URISyntaxException {
+        instances = buildPipe();
+    }
 
-        InstanceList instances = buildPipe();
-        addEnhancementsThruPipe(instances, fileName);
+    public void setNumTopics(int numTopics) {
+        this.numTopics = numTopics;
+    }
+
+    public void model() throws Exception {
         ParallelTopicModel model = createTopicModel(5, instances);
 
         // The data alphabet maps word IDs to strings
@@ -40,7 +41,7 @@ public class TopicModeler {
 
 
         Formatter out = buildFormatter(tokens, topics, dataAlphabet);
-        showTopWords(out, numTopics,dataAlphabet, topicSortedWords, topicDistribution);
+        showTopWords(numTopics,dataAlphabet, topicSortedWords, topicDistribution);
 
         int rank = 0;
         while (iterator.hasNext() && rank < numTopics) {
@@ -58,30 +59,31 @@ public class TopicModeler {
         System.out.println("0\t" + testProbabilities[0]);
     }
 
-
-    private void addEnhancementsThruPipe(InstanceList instances, String fileName) throws IOException {
-        ExcelReader excelReader = new ExcelReader(fileName);
-        for (Enhancement enhancement : excelReader.getEnhancements()) {
-            instances.addThruPipe(enhancement);
-        }
+    public void addIssueListThruPipe(List<Issue> issues) {
+        issues.forEach(instances::addThruPipe);
     }
+
 
     private InstanceList buildPipe() throws URISyntaxException {
-        ArrayList<Pipe> topicList = new ArrayList<Pipe>();
+        List<Pipe> topicList = new ArrayList<>();
         topicList.add(new CharSequenceLowercase());
         topicList.add(new CharSequence2TokenSequence());
-        topicList.add( new TokenSequenceRemoveStopwords(false, false));
-        topicList.add( new TokenSequence2FeatureSequence());
+        topicList.add(new TokenSequenceRemoveNonAlpha());
+        TokenSequenceRemoveStopwords tsrs = new TokenSequenceRemoveStopwords(false, false);
+        String[] stopWords = {"quot"};
+        tsrs.addStopWords(stopWords);
+        topicList.add(tsrs);
+        topicList.add(new TokenSequence2FeatureSequence());
         return new InstanceList(new SerialPipes(topicList));
     }
-    private  ParallelTopicModel createTopicModel(int numTopics, InstanceList instances) throws Exception {
+
+    private ParallelTopicModel createTopicModel(int numTopics, InstanceList instances) throws Exception {
         ParallelTopicModel model = new ParallelTopicModel(numTopics, 1.0, 0.01);
         model.addInstances(instances);
         model.setNumIterations(50);
         model.estimate();
 
         return model;
-
     }
 
     private Formatter buildFormatter(FeatureSequence tokens, LabelSequence topics, Alphabet dataAlphabet) {
@@ -93,7 +95,7 @@ public class TopicModeler {
         return out;
     }
 
-    private void showTopWords(Formatter out, int numTopics,
+    private void showTopWords(int numTopics,
                               Alphabet dataAlphabet,
                               ArrayList<TreeSet<IDSorter>> topicSortedWords,
                               double[] topicDistribution) {
@@ -102,7 +104,7 @@ public class TopicModeler {
         for (int topic = 0; topic < numTopics; topic++) {
             Iterator<IDSorter> iterator = topicSortedWords.get(topic).iterator();
 
-            out = new Formatter(new StringBuilder(), Locale.US);
+            Formatter out = new Formatter(new StringBuilder(), Locale.US);
             out.format("%d\t%.3f\t", topic, topicDistribution[topic]);
             int rank = 0;
             while (iterator.hasNext() && rank < 5) {
