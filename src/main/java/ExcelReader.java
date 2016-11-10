@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by JacobAMason on 10/19/16.
@@ -13,8 +14,8 @@ import java.util.Date;
 public class ExcelReader {
     private XSSFWorkbook workbook;
     private FileInputStream inputStream;
-    private ArrayList<Bug> bugs = new ArrayList<Bug>();
-    private ArrayList<Enhancement> enhancements = new ArrayList<Enhancement>();
+    private List<Bug> bugs = new ArrayList<Bug>();
+    private List<Enhancement> enhancements = new ArrayList<Enhancement>();
 
     public ExcelReader(String fileName) throws IOException {
         inputStream = new FileInputStream(new File(fileName));
@@ -38,19 +39,19 @@ public class ExcelReader {
             String issueTypeOrSeverity = getTypeOrSeverity(nextRow);
             Date issueCreationDate = getIssueCreationDate(nextRow);
             Date issueResolveDate = getIssueResolveDate(nextRow);
-            add_issue_to_list(issueNumber, issueDescription, issueTypeOrSeverity, issueCreationDate, issueResolveDate);
+            addIssueToList(issueNumber, issueDescription, issueTypeOrSeverity, issueCreationDate, issueResolveDate);
         }
     }
 
-    public ArrayList<Bug> getBugs() {
+    public List<Bug> getBugs() {
         return bugs;
     }
 
-    public ArrayList<Enhancement> getEnhancements() {
+    public List<Enhancement> getEnhancements() {
         return enhancements;
     }
 
-    private void add_issue_to_list(int issueNumber, String issueDescription, String issueTypeOrSeverity, Date issueCreationDate, Date issueResolveDate) {
+    private void addIssueToList(int issueNumber, String issueDescription, String issueTypeOrSeverity, Date issueCreationDate, Date issueResolveDate) {
         if (Bug.Severity.getSeverityFromString(issueTypeOrSeverity) == Bug.Severity.enhancement) {
             enhancements.add(new Enhancement(issueNumber, issueDescription, issueCreationDate, issueResolveDate));
         } else {
