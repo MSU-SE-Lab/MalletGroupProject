@@ -9,7 +9,7 @@
   <tabs>
     <Tab text="Graph 1">
          <content>
-            <PieChart title="Test Pie Chart" />
+            <PieChart fx:id="pieChartOne" title="Test Pie Chart" />
          </content></Tab>
     <Tab text="Graph 2">
          <content>
