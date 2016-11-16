@@ -81,10 +81,10 @@ public class UILoader extends Application {
 //                        new PieChart.Data("Apples", 30));
 //        pieChartOne.setData(pieChartData);
     }
-
-    public void setPieData(Scene resultsScene, Array nameAry, Array dataAry) {
-//        final PieChart pieChartOne = resultsScene.get
-    }
+//
+//    public void setPieData(Scene resultsScene, Array nameAry, Array dataAry) {
+////        final PieChart pieChartOne = resultsScene.get
+//    }
 
     String fullPath;
     File file;
