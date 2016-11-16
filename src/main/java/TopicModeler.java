@@ -8,43 +8,33 @@ import java.util.*;
 
 public class TopicModeler {
     private InstanceList instances;
-    private int numTopics = 5;
+    private int numTopics = 6;
 
     public TopicModeler() throws URISyntaxException {
         instances = buildPipe();
+    }
+
+    public ParallelTopicModel model() throws Exception {
+        ParallelTopicModel model = new ParallelTopicModel(numTopics, 1.0, 0.01);
+        model.addInstances(instances);
+        model.setNumThreads(4);
+        model.setNumIterations(100);
+        model.estimate();
+
+        return model;
     }
 
     public void setNumTopics(int numTopics) {
         this.numTopics = numTopics;
     }
 
-    public void model() throws Exception {
-        ParallelTopicModel model = createTopicModel(5, instances);
-
-        // The data alphabet maps word IDs to strings
-        Alphabet dataAlphabet = instances.getDataAlphabet();
-
-        FeatureSequence tokens = (FeatureSequence) model.getData().get(0).instance.getData();
-        LabelSequence topics = model.getData().get(0).topicSequence;
-
-        // Estimate the topic distribution of the first instance,
-        //  given the current Gibbs state.
-        double[] topicDistribution = model.getTopicProbabilities(0);
-
-        // Get an array of sorted sets of word ID/count pairs
-        ArrayList<TreeSet<IDSorter>> topicSortedWords = model.getSortedWords();
-
-
+    private void testModel(ParallelTopicModel model, ArrayList<TreeSet<IDSorter>> topicSortedWords, Alphabet dataAlphabet) {
         // Create a new instance with high probability of topic 0
         StringBuilder topicZeroText = new StringBuilder();
         Iterator<IDSorter> iterator = topicSortedWords.get(0).iterator();
 
-
-        Formatter out = buildFormatter(tokens, topics, dataAlphabet);
-        showTopWords(numTopics,dataAlphabet, topicSortedWords, topicDistribution);
-
         int rank = 0;
-        while (iterator.hasNext() && rank < numTopics) {
+        while (iterator.hasNext() && rank < 5) {
             IDSorter idCountPair = iterator.next();
             topicZeroText.append(dataAlphabet.lookupObject(idCountPair.getID()) + " ");
             rank++;
@@ -52,6 +42,7 @@ public class TopicModeler {
 
         // Create a new instance named "test instance" with empty target and source fields.
         InstanceList testing = new InstanceList(instances.getPipe());
+        System.err.println(topicZeroText);
         testing.addThruPipe(new Instance(topicZeroText.toString(), null, "test instance", null));
 
         TopicInferencer inferencer = model.getInferencer();
@@ -62,7 +53,6 @@ public class TopicModeler {
     public void addIssueListThruPipe(List<Issue> issues) {
         issues.forEach(instances::addThruPipe);
     }
-
 
     private InstanceList buildPipe() throws URISyntaxException {
         List<Pipe> topicList = new ArrayList<>();
@@ -77,15 +67,6 @@ public class TopicModeler {
         return new InstanceList(new SerialPipes(topicList));
     }
 
-    private ParallelTopicModel createTopicModel(int numTopics, InstanceList instances) throws Exception {
-        ParallelTopicModel model = new ParallelTopicModel(numTopics, 1.0, 0.01);
-        model.addInstances(instances);
-        model.setNumIterations(50);
-        model.estimate();
-
-        return model;
-    }
-
     private Formatter buildFormatter(FeatureSequence tokens, LabelSequence topics, Alphabet dataAlphabet) {
         Formatter out = new Formatter(new StringBuilder(), Locale.US);
         for (int position = 0; position < tokens.getLength(); position++) {
@@ -95,8 +76,7 @@ public class TopicModeler {
         return out;
     }
 
-    private void showTopWords(int numTopics,
-                              Alphabet dataAlphabet,
+    private void showTopWords(Alphabet dataAlphabet,
                               ArrayList<TreeSet<IDSorter>> topicSortedWords,
                               double[] topicDistribution) {
 
