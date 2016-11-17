@@ -1,6 +1,4 @@
 import cc.mallet.topics.ParallelTopicModel;
-import cc.mallet.topics.TopicAssignment;
-import cc.mallet.topics.TopicInferencer;
 import org.junit.Before;
 import org.junit.Test;
 
