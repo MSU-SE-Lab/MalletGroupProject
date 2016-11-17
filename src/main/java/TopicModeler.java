@@ -29,6 +29,10 @@ public class TopicModeler {
         this.numTopics = numTopics;
     }
 
+    public void addIssueListThruPipe(List<Issue> issues) {
+        issues.forEach(instances::addThruPipe);
+    }
+
     private void testModel(ParallelTopicModel model, ArrayList<TreeSet<IDSorter>> topicSortedWords, Alphabet dataAlphabet) {
         // Create a new instance with high probability of topic 0
         StringBuilder topicZeroText = new StringBuilder();
@@ -51,10 +55,6 @@ public class TopicModeler {
         System.out.println("0\t" + testProbabilities[0]);
     }
 
-    public void addIssueListThruPipe(List<Issue> issues) {
-        issues.forEach(instances::addThruPipe);
-    }
-
     private InstanceList buildPipe() throws URISyntaxException {
         List<Pipe> topicList = new ArrayList<>();
         //topicList.add(new Target2Label());
@@ -69,7 +69,7 @@ public class TopicModeler {
         return new InstanceList(new SerialPipes(topicList));
     }
 
-    public void assignTopicsToIssues(ParallelTopicModel model) {
+    private void assignTopicsToIssues(ParallelTopicModel model) {
         TopicInferencer topicInferencer = model.getInferencer();
         model.getData().forEach(p -> {
             double[] distribution = topicInferencer.getSampledDistribution(p.instance, 10, 1, 1);

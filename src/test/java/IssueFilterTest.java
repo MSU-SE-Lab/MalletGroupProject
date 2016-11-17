@@ -29,7 +29,10 @@ public class IssueFilterTest {
         Date date = new SimpleDateFormat("MM/dd/yyyy").parse("01/01/2010");
         List<Issue> list = IssueFilter.createdAfterDate((excelReader.getEnhancements()).stream(), date).collect(Collectors.toList());
         topicModeler.addIssueListThruPipe(list);
-        topicModeler.model().printTopWords(System.out, 5, false);
+        ParallelTopicModel model = topicModeler.model();
+        model.printTopWords(System.out, 5, false);
+
+        IssueFilter.hasTopic(model.getData().stream(), 0).forEach(p -> System.out.println(p.instance));
     }
 
     @Test

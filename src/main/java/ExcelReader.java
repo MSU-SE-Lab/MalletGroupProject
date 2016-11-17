@@ -62,7 +62,7 @@ public class ExcelReader {
     private Date getIssueResolveDate(XSSFRow nextRow) {
         Date issueResolveDate;
         if (nextRow.getCell(4, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK).getCellType() == XSSFCell.CELL_TYPE_STRING) {
-            issueResolveDate = new Date(0);
+            issueResolveDate = new Date();
         } else {
             issueResolveDate = nextRow.getCell(4).getDateCellValue();
         }
