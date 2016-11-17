@@ -8,7 +8,7 @@ import java.util.*;
 
 public class TopicModeler {
     private InstanceList instances;
-    private int numTopics = 6;
+    private int numTopics = 5;
 
     public TopicModeler() throws URISyntaxException {
         instances = buildPipe();
@@ -20,6 +20,7 @@ public class TopicModeler {
         model.setNumThreads(4);
         model.setNumIterations(100);
         model.estimate();
+        assignTopicsToIssues(model);
 
         return model;
     }
@@ -56,6 +57,7 @@ public class TopicModeler {
 
     private InstanceList buildPipe() throws URISyntaxException {
         List<Pipe> topicList = new ArrayList<>();
+        //topicList.add(new Target2Label());
         topicList.add(new CharSequenceLowercase());
         topicList.add(new CharSequence2TokenSequence());
         topicList.add(new TokenSequenceRemoveNonAlpha());
@@ -67,33 +69,20 @@ public class TopicModeler {
         return new InstanceList(new SerialPipes(topicList));
     }
 
-    private Formatter buildFormatter(FeatureSequence tokens, LabelSequence topics, Alphabet dataAlphabet) {
-        Formatter out = new Formatter(new StringBuilder(), Locale.US);
-        for (int position = 0; position < tokens.getLength(); position++) {
-            out.format("%s-%d \n", dataAlphabet.lookupObject(tokens.getIndexAtPosition(position)),
-                    topics.getIndexAtPosition(position));
-        }
-        return out;
-    }
-
-    private void showTopWords(Alphabet dataAlphabet,
-                              ArrayList<TreeSet<IDSorter>> topicSortedWords,
-                              double[] topicDistribution) {
-
-        // Show top 5 words in topics with proportions for the first document
-        for (int topic = 0; topic < numTopics; topic++) {
-            Iterator<IDSorter> iterator = topicSortedWords.get(topic).iterator();
-
-            Formatter out = new Formatter(new StringBuilder(), Locale.US);
-            out.format("%d\t%.3f\t", topic, topicDistribution[topic]);
-            int rank = 0;
-            while (iterator.hasNext() && rank < 5) {
-                IDSorter idCountPair = iterator.next();
-                out.format("%s (%.0f) ", dataAlphabet.lookupObject(idCountPair.getID()), idCountPair.getWeight());
-                rank++;
+    public void assignTopicsToIssues(ParallelTopicModel model) {
+        TopicInferencer topicInferencer = model.getInferencer();
+        model.getData().forEach(p -> {
+            double[] distribution = topicInferencer.getSampledDistribution(p.instance, 10, 1, 1);
+            int maxIndex = p.topicSequence.getIndexAtPosition(0);
+            double maxValue = 0;
+            for (int i : p.topicSequence.getFeatures()) {
+                if (distribution[i] > maxValue) {
+                    maxIndex = i;
+                    maxValue = distribution[i];
+                }
             }
-            System.out.println(out);
-        }
+            ((Issue)p.instance).assignTopic(maxIndex);
+        });
     }
 }
 

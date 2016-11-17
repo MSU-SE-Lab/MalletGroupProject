@@ -10,12 +10,21 @@ public abstract class Issue extends Instance {
     protected String description;
     protected Date timeCreated;
     protected Date timeResolved;
+    private int topic;
 
     public Issue(int issueNumber, String description, Date timeCreated, Date timeResolved) {
-        super(description, issueNumber, null, null);
+        super(description, null, null, null);
         this.issueNumber = issueNumber;
         this.description = description;
         this.timeCreated = timeCreated;
         this.timeResolved = timeResolved;
+    }
+
+    public void assignTopic(int topic) {
+        this.topic = topic;
+    }
+
+    public int getTopic() {
+        return topic;
     }
 }

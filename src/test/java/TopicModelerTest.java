@@ -28,6 +28,7 @@ public class TopicModelerTest {
 
     @Test
     public void testClusteredDominantTopicsForBugs() throws Exception {
+        topicModeler.setNumTopics(6);
         topicModeler.addIssueListThruPipe((List<Issue>)(List<?>) excelReader.getBugs());
         topicModeler.model().printTopWords(System.out, 5, false);
     }
