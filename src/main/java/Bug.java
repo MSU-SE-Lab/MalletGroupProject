@@ -29,8 +29,8 @@ public class Bug extends Issue {
     public String toString() {
         return "Bug{" +
                 "issueNumber=" + issueNumber +
-                " description=" + description +
-                " timeCreated=" + timeCreated +
+                " description='" + description +
+                "' timeCreated=" + timeCreated +
                 " timeResolved=" + timeResolved +
                 " severityLevel=" + severityLevel +
                 '}';

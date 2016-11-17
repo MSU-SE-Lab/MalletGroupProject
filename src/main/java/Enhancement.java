@@ -12,8 +12,8 @@ public class Enhancement extends Issue {
     public String toString() {
         return "Enhancement{" +
                 "issueNumber=" + issueNumber +
-                " description=" + description +
-                " timeCreated=" + timeCreated +
+                " description='" + description +
+                "' timeCreated=" + timeCreated +
                 " timeResolved=" + timeResolved +
                 '}';
     }
