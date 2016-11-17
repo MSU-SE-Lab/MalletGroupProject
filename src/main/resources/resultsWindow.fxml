@@ -5,15 +5,5 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UILoader">
-  <tabs>
-    <Tab text="Graph 1">
-         <content>
-            <PieChart fx:id="pieChartOne" title="Test Pie Chart" />
-         </content></Tab>
-    <Tab text="Graph 2">
-         <content>
-            <PieChart title="Test Pie Chart 2" />
-         </content></Tab>
-  </tabs>
-</TabPane>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />

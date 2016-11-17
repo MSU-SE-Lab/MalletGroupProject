@@ -10,14 +10,14 @@
       <VBox alignment="CENTER" prefHeight="309.0" prefWidth="316.0" BorderPane.alignment="CENTER">
          <children>
             <Label text="File Location:" />
-            <TextField />
+            <TextField fx:id="fileText" />
             <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="39.0" visible="false" />
             <Button fx:id="browseBtn" mnemonicParsing="false" onAction="#runBrowseBtn" text="Browse" />
             <Separator orientation="VERTICAL" prefHeight="29.0" prefWidth="97.0" visible="false" />
             <Label text="Number of topics to find:" />
             <TextField maxWidth="50.0" />
             <Separator orientation="VERTICAL" prefHeight="22.0" prefWidth="36.0" visible="false" />
-            <Button fx:id="runModelerBtn" mnemonicParsing="false" onAction="#runBrowseBtn" text="Run Modeler" />
+            <Button fx:id="runModelerBtn" mnemonicParsing="false" onAction="#runCompileBtn" text="Run Modeler" />
          </children>
       </VBox>
    </center>
