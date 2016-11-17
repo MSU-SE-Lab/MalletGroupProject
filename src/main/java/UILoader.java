@@ -13,6 +13,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.List;
 
 public class UILoader extends Application {
 
@@ -59,8 +61,14 @@ public class UILoader extends Application {
 
 
     public void runCompileBtn() throws IOException {
-        ExcelReader write = new ExcelReader(fullPath.replaceAll("\\\\","\\\\\\\\"));
-        write.parse_input();
+        ExcelReader excelReader = new ExcelReader(fullPath.replaceAll("\\\\","\\\\\\\\"));
+        try {
+            TopicModeler topicModeler = new TopicModeler();
+            topicModeler.addIssueListThruPipe((List<Issue>)(List<?>)excelReader.getBugs());
+            topicModeler.model();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void runBrowseBtn() throws IOException {
