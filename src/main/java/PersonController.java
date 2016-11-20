@@ -14,14 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
  * @author root
  */
 public class PersonController {
@@ -34,7 +27,7 @@ public class PersonController {
         stage.setTitle("Modeler Results");
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
-        for (int i =0; i < nameAry.length; i++) {
+        for (int i = 0; i < nameAry.length; i++) {
             pieChartData.add(new PieChart.Data(nameAry[i], numAry[i]));
         }
 
@@ -53,16 +46,17 @@ public class PersonController {
     @FXML
     private TextField num;
 
-        @FXML private TextField fileText;
+    @FXML
+    private TextField fileText;
 
     @FXML
-    private Button browseBtn ;
+    private Button browseBtn;
 
     public void runCompileBtn() throws IOException {
-        ExcelReader excelReader = new ExcelReader(fullPath.replaceAll("\\\\","\\\\\\\\"));
+        ExcelReader excelReader = new ExcelReader(fullPath.replaceAll("\\\\", "\\\\\\\\"));
         try {
             TopicModeler topicModeler = new TopicModeler();
-            topicModeler.addIssueListThruPipe((List<Issue>)(List<?>)excelReader.getBugs());
+            topicModeler.addIssueListThruPipe((List<Issue>) (List<?>) excelReader.getBugs());
             topicModeler.model();
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,7 +77,7 @@ public class PersonController {
         } else {
             fileText.setText("No Selection");
         }
-        
+
         // Test code for pie chart loader
 //        String testString[] = {"This", "is", "only", "a", "test."};
 //        int testInt[] = {1, 2, 3, 4, 9};
