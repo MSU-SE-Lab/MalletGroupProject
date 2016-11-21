@@ -1,44 +1,56 @@
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
-import javax.swing.*;
+import javafx.stage.Window;
+import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
 /**
+ *
  * @author root
  */
 public class PersonController {
 
 
-    public void loadPieChart() throws IOException {
-        String nameAry[] = {"search", "bookmark", "tab", "window", "button"};
-        int numAry[] = {68, 29, 36, 49, 24};
-        Stage stage = new Stage();
-        stage.setTitle("Modeler Results");
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-
-        for (int i = 0; i < nameAry.length; i++) {
-            pieChartData.add(new PieChart.Data(nameAry[i], numAry[i]));
-        }
-
-        final PieChart chart = new PieChart(pieChartData);
-        chart.setTitle("Modeler Results");
-
-        StackPane root = new StackPane();
-        root.getChildren().add(chart);
-        stage.setScene(new Scene(root, 600, 600));
-        stage.show();
-    }
+//    public void loadPieChart() throws IOException {
+//        String nameAry[] = {"search", "bookmark", "tab", "window", "button"};
+//        int numAry[] = {68, 29, 36, 49, 24};
+//        Stage stage = new Stage();
+//        stage.setTitle("Modeler Results");
+//        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+//
+//        for (int i =0; i < nameAry.length; i++) {
+//            pieChartData.add(new PieChart.Data(nameAry[i], numAry[i]));
+//        }
+//
+//        final PieChart chart = new PieChart(pieChartData);
+//        chart.setTitle("Modeler Results");
+//
+//        StackPane root = new StackPane();
+//        root.getChildren().add(chart);
+//        stage.setScene(new Scene(root, 600, 600));
+//        stage.show();
+//    }
 
     String fullPath;
     File file;
@@ -50,14 +62,29 @@ public class PersonController {
     private TextField fileText;
 
     @FXML
-    private Button browseBtn;
+    private Button browseBtn ;
+    
+    @FXML
+    private Button runModelerBtn ;
+    
+    @FXML
+    private BarChart barChartEnhancements;
 
     public void runCompileBtn() throws IOException {
-        ExcelReader excelReader = new ExcelReader(fullPath.replaceAll("\\\\", "\\\\\\\\"));
+       // ExcelReader excelReader = new ExcelReader(fullPath.replaceAll("\\\\","\\\\\\\\"));
         try {
-            TopicModeler topicModeler = new TopicModeler();
-            topicModeler.addIssueListThruPipe((List<Issue>) (List<?>) excelReader.getBugs());
-            topicModeler.model();
+//            TopicModeler topicModeler = new TopicModeler();
+//            topicModeler.addIssueListThruPipe((List<Issue>)(List<?>)excelReader.getBugs());
+//            topicModeler.model();   
+
+         Parent root = FXMLLoader.load(getClass().getResource("results.fxml"));
+
+         Stage stage = (Stage) runModelerBtn.getScene().getWindow();
+         Scene scene = new Scene(root);
+         stage.setScene(scene);
+        
+         
+         
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,7 +104,7 @@ public class PersonController {
         } else {
             fileText.setText("No Selection");
         }
-
+        
         // Test code for pie chart loader
 //        String testString[] = {"This", "is", "only", "a", "test."};
 //        int testInt[] = {1, 2, 3, 4, 9};
