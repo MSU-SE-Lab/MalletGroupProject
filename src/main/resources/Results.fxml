@@ -1,65 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
 <?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
-  <children>
-    <TabPane layoutX="14.0" layoutY="14.0" prefHeight="372.0" prefWidth="572.0" tabClosingPolicy="UNAVAILABLE">
-      <tabs>
-        <Tab text="Bar Chart Enhancements">
-          <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-              <children>
-                <BarChart fx:id="barChartEnhancements" layoutX="36.0" layoutY="21.0" prefHeight="300.0">
-                  <xAxis>
-                    <CategoryAxis side="BOTTOM" />
-                  </xAxis>
-                  <yAxis>
-                    <NumberAxis side="LEFT" />
-                  </yAxis>
-                </BarChart>
-              </children>
-            </AnchorPane>
-          </content>
-        </Tab>
-        <Tab text="Bar Chart Bugs">
-          <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-              <children>
-                <BarChart layoutX="36.0" layoutY="21.0" prefHeight="300.0">
-                  <xAxis>
-                    <CategoryAxis side="BOTTOM" />
-                  </xAxis>
-                  <yAxis>
-                    <NumberAxis side="LEFT" />
-                  </yAxis>
-                </BarChart>
-              </children>
-            </AnchorPane>
-          </content>
-        </Tab>
-        <Tab text="Line Chart">
-          <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-              <children>
-                <LineChart id="LineChart" layoutX="36.0" layoutY="21.0" prefHeight="300.0">
-                  <xAxis>
-                    <CategoryAxis side="BOTTOM" />
-                  </xAxis>
-                  <yAxis>
-                    <NumberAxis side="LEFT" />
-                  </yAxis>
-                </LineChart>
-              </children>
-            </AnchorPane>
-          </content>
-        </Tab>
-      </tabs>
-    </TabPane>
-  </children>
-</AnchorPane>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<TabPane prefHeight="372.0" prefWidth="572.0" tabClosingPolicy="UNAVAILABLE"
+         xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="PersonController">
+    <Tab text="Bar Chart Enhancements">
+        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <BarChart fx:id="barChartEnhancements" layoutX="36.0" layoutY="21.0" prefHeight="300.0">
+                <xAxis>
+                    <CategoryAxis side="BOTTOM"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis side="LEFT"/>
+                </yAxis>
+            </BarChart>
+        </AnchorPane>
+    </Tab>
+    <Tab text="Bar Chart Bugs">
+        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <BarChart layoutX="36.0" layoutY="21.0" prefHeight="300.0">
+                <xAxis>
+                    <CategoryAxis side="BOTTOM"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis side="LEFT"/>
+                </yAxis>
+            </BarChart>
+        </AnchorPane>
+    </Tab>
+    <Tab text="Line Chart">
+        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <LineChart id="LineChart" layoutX="36.0" layoutY="21.0" prefHeight="300.0">
+                <xAxis>
+                    <CategoryAxis side="BOTTOM"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis side="LEFT"/>
+                </yAxis>
+            </LineChart>
+        </AnchorPane>
+    </Tab>
+</TabPane>
