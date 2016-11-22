@@ -2,6 +2,7 @@ package UI;
 
 import TopicModeling.*;
 import cc.mallet.topics.ParallelTopicModel;
+import cc.mallet.types.IDSorter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +15,10 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
@@ -45,28 +49,26 @@ public class MainController {
         ExcelReader excelReader = new ExcelReader(excelFile);
         try {
             int numberOfTopics = (numberOfTopicsText.getText().isEmpty()) ? 5 : Integer.parseInt(numberOfTopicsText.getText());
-            TopicModeler topicModeler = new TopicModeler();
-            topicModeler.setNumTopics(numberOfTopics);
+            TopicModeler topicModeler = new TopicModeler(numberOfTopics);
             topicModeler.addIssueListThruPipe((List<Issue>) (List<?>) excelReader.getBugs());
             ParallelTopicModel model = topicModeler.model();
             List<Bug> bugs = model.getData().stream().map(p -> (Bug) p.instance).collect(Collectors.toList());
 
             ResultsController controller = loader.getController();
-            controller.setBarChartBugs(bugs, numberOfTopics);
+            controller.setBarChartBugs(bugs, numberOfTopics, topicModeler.getTopicNames());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
             int numberOfTopics = (numberOfTopicsText.getText().isEmpty()) ? 5 : Integer.parseInt(numberOfTopicsText.getText());
-            TopicModeler topicModeler = new TopicModeler();
-            topicModeler.setNumTopics(numberOfTopics);
+            TopicModeler topicModeler = new TopicModeler(numberOfTopics);
             topicModeler.addIssueListThruPipe((List<Issue>) (List<?>) excelReader.getEnhancements());
             ParallelTopicModel model = topicModeler.model();
             List<Enhancement> enhancements = model.getData().stream().map(p -> (Enhancement) p.instance).collect(Collectors.toList());
 
             ResultsController controller = loader.getController();
-            controller.setBarChartEnhancements(enhancements, numberOfTopics);
+            controller.setBarChartEnhancements(enhancements, numberOfTopics, topicModeler.getTopicNames());
         } catch (Exception e) {
             e.printStackTrace();
         }

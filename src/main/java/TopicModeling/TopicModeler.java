@@ -8,53 +8,40 @@ import cc.mallet.types.*;
 import java.net.URISyntaxException;
 import java.util.*;
 
-public class TopicModeler {
+public class TopicModeler extends ParallelTopicModel {
     private InstanceList instances;
     private int numTopics = 5;
 
-    public TopicModeler() throws URISyntaxException {
+    public TopicModeler(int numTopics) throws URISyntaxException {
+        super(numTopics);
         instances = buildPipe();
     }
 
-    public ParallelTopicModel model() throws Exception {
-        ParallelTopicModel model = new ParallelTopicModel(numTopics, 1.0, 0.01);
-        model.addInstances(instances);
-        model.setNumThreads(4);
-        model.setNumIterations(50);  // TODO: Bump this back to something like 1000 for production
-        model.estimate();
-        assignTopicsToIssues(model);
+    public TopicModeler model() throws Exception {
+        addInstances(instances);
+        setNumThreads(4);
+        setNumIterations(50);  // TODO: Bump this back to something like 1000 for production
+        estimate();
+        assignTopicsToIssues();
 
-        return model;
-    }
-
-    public void setNumTopics(int numTopics) {
-        this.numTopics = numTopics;
+        return this;
     }
 
     public void addIssueListThruPipe(List<Issue> issues) {
         issues.forEach(instances::addThruPipe);
     }
 
-    private void testModel(ParallelTopicModel model, ArrayList<TreeSet<IDSorter>> topicSortedWords, Alphabet dataAlphabet) {
-        // Create a new instance with high probability of topic 0
-        StringBuilder topicZeroText = new StringBuilder();
-        Iterator<IDSorter> iterator = topicSortedWords.get(0).iterator();
+    public String[] getTopicNames() {
+        String[] topicNames = new String[numTopics];
+        ArrayList<TreeSet<IDSorter>> topicSortedWords = getSortedWords();
 
-        int rank = 0;
-        while (iterator.hasNext() && rank < 5) {
-            IDSorter idCountPair = iterator.next();
-            topicZeroText.append(dataAlphabet.lookupObject(idCountPair.getID()) + " ");
-            rank++;
+        for (int i = 0; i < numTopics; i++) {
+            TreeSet<IDSorter> sortedWords = topicSortedWords.get(i);
+            IDSorter info = sortedWords.iterator().next();
+            topicNames[i] = getAlphabet().lookupObject(info.getID()).toString();
         }
 
-        // Create a new instance named "test instance" with empty target and source fields.
-        InstanceList testing = new InstanceList(instances.getPipe());
-        System.err.println(topicZeroText);
-        testing.addThruPipe(new Instance(topicZeroText.toString(), null, "test instance", null));
-
-        TopicInferencer inferencer = model.getInferencer();
-        double[] testProbabilities = inferencer.getSampledDistribution(testing.get(0), 10, 1, 5);
-        System.out.println("0\t" + testProbabilities[0]);
+        return topicNames;
     }
 
     private InstanceList buildPipe() throws URISyntaxException {
@@ -70,9 +57,9 @@ public class TopicModeler {
         return new InstanceList(new SerialPipes(topicList));
     }
 
-    private void assignTopicsToIssues(ParallelTopicModel model) {
-        TopicInferencer topicInferencer = model.getInferencer();
-        model.getData().forEach(p -> {
+    private void assignTopicsToIssues() {
+        TopicInferencer topicInferencer = getInferencer();
+        getData().forEach(p -> {
             double[] distribution = topicInferencer.getSampledDistribution(p.instance, 10, 1, 1);
             int maxIndex = p.topicSequence.getIndexAtPosition(0);
             double maxValue = 0;

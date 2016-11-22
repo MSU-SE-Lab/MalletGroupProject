@@ -24,27 +24,27 @@ public class ResultsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 
-    void setBarChartBugs(List<Bug> bugs, int numberOfBugs) {
-        int[] topics = new int[numberOfBugs];
-        bugs.forEach(b -> topics[b.getTopic()]++);
-
-        XYChart.Series<String, Integer> series = new XYChart.Series<>();
-        for (int i = 0; i < topics.length; i++) {
-            series.getData().add(new XYChart.Data<>(String.valueOf(i), topics[i]));
-        }
-
-        barChartBugs.getData().add(series);
-    }
-
-    void setBarChartEnhancements(List<Enhancement> enhancements, int numberOfEnhancements) {
+    void setBarChartEnhancements(List<Enhancement> enhancements, int numberOfEnhancements, String[] topicNames) {
         int[] topics = new int[numberOfEnhancements];
         enhancements.forEach(b -> topics[b.getTopic()]++);
 
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
         for (int i = 0; i < topics.length; i++) {
-            series.getData().add(new XYChart.Data<>(String.valueOf(i), topics[i]));
+            series.getData().add(new XYChart.Data<>(topicNames[i], topics[i]));
         }
 
         barChartEnhancements.getData().add(series);
+    }
+
+    void setBarChartBugs(List<Bug> bugs, int numberOfBugs, String[] topicNames) {
+        int[] topics = new int[numberOfBugs];
+        bugs.forEach(b -> topics[b.getTopic()]++);
+
+        XYChart.Series<String, Integer> series = new XYChart.Series<>();
+        for (int i = 0; i < topics.length; i++) {
+            series.getData().add(new XYChart.Data<>(topicNames[i], topics[i]));
+        }
+
+        barChartBugs.getData().add(series);
     }
 }

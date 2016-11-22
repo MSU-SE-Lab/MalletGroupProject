@@ -19,7 +19,7 @@ public class IssueFilterTest {
 
     @Before
     public void setUp() throws Exception {
-        topicModeler = new TopicModeler();
+        topicModeler = new TopicModeler(5);
         excelReader = new ExcelReader("Firefox_MasterFile_4214Fall2016.xlsx");
     }
 

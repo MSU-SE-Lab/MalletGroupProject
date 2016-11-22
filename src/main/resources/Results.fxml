@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.AnchorPane?>
-
 <TabPane prefHeight="446.0" prefWidth="618.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.ResultsController">
    <tabs>
        <Tab text="Bar Chart Enhancements">
           <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <center>
-                     <BarChart fx:id="barChartEnhancements" prefHeight="300.0" BorderPane.alignment="CENTER">
+                     <BarChart fx:id="barChartEnhancements" legendVisible="false" BorderPane.alignment="CENTER">
                          <xAxis>
                              <CategoryAxis side="BOTTOM" />
                          </xAxis>
@@ -34,7 +25,7 @@
           <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <center>
-                     <BarChart fx:id="barChartBugs" legendVisible="false" prefHeight="300.0" BorderPane.alignment="CENTER">
+                     <BarChart fx:id="barChartBugs" legendVisible="false" BorderPane.alignment="CENTER">
                          <xAxis>
                              <CategoryAxis side="BOTTOM" />
                          </xAxis>
@@ -50,7 +41,7 @@
           <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <center>
-                     <LineChart fx:id="lineChartEnhancements" prefHeight="300.0" BorderPane.alignment="CENTER">
+                     <LineChart fx:id="lineChartEnhancements" legendVisible="false" BorderPane.alignment="CENTER">
                          <xAxis>
                              <CategoryAxis side="BOTTOM" />
                          </xAxis>
@@ -66,7 +57,7 @@
         <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <center>
-                  <LineChart fx:id="lineChartBugs" BorderPane.alignment="CENTER">
+                  <LineChart fx:id="lineChartBugs" legendVisible="false" BorderPane.alignment="CENTER">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
