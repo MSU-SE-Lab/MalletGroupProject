@@ -11,7 +11,7 @@
 <TabPane prefHeight="372.0" prefWidth="572.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.ResultsController">
     <Tab text="Bar Chart Enhancements">
         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-            <BarChart fx:id="barChartEnhancements" layoutX="36.0" layoutY="21.0" prefHeight="300.0">
+            <BarChart fx:id="barChartEnhancements" layoutX="36.0" layoutY="21.0" prefHeight="300.0" legendVisible="false">
                 <xAxis>
                     <CategoryAxis side="BOTTOM" />
                 </xAxis>
@@ -23,7 +23,7 @@
     </Tab>
     <Tab text="Bar Chart Bugs">
         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-            <BarChart fx:id="barChartBugs" layoutX="36.0" layoutY="21.0" prefHeight="300.0">
+            <BarChart fx:id="barChartBugs" layoutX="36.0" layoutY="21.0" prefHeight="300.0" legendVisible="false">
                 <xAxis>
                     <CategoryAxis side="BOTTOM" />
                 </xAxis>

@@ -20,7 +20,7 @@ public class TopicModeler {
         ParallelTopicModel model = new ParallelTopicModel(numTopics, 1.0, 0.01);
         model.addInstances(instances);
         model.setNumThreads(4);
-        model.setNumIterations(100);
+        model.setNumIterations(50);  // TODO: Bump this back to something like 1000 for production
         model.estimate();
         assignTopicsToIssues(model);
 

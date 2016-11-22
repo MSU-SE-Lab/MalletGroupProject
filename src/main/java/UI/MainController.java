@@ -1,17 +1,11 @@
 package UI;
 
-import TopicModeling.Bug;
-import TopicModeling.ExcelReader;
-import TopicModeling.Issue;
-import TopicModeling.TopicModeler;
+import TopicModeling.*;
 import cc.mallet.topics.ParallelTopicModel;
-import cc.mallet.topics.TopicAssignment;
-import cc.mallet.util.CommandOption;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -20,10 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -50,9 +41,6 @@ public class MainController {
     public void runModelerBtn() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../Results.fxml"));
         Parent root = loader.load();
-        Stage stage = (Stage) runModelerBtn.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
 
         ExcelReader excelReader = new ExcelReader(excelFile);
         try {
@@ -68,6 +56,24 @@ public class MainController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        try {
+            int numberOfTopics = (numberOfTopicsText.getText().isEmpty()) ? 5 : Integer.parseInt(numberOfTopicsText.getText());
+            TopicModeler topicModeler = new TopicModeler();
+            topicModeler.setNumTopics(numberOfTopics);
+            topicModeler.addIssueListThruPipe((List<Issue>) (List<?>) excelReader.getEnhancements());
+            ParallelTopicModel model = topicModeler.model();
+            List<Enhancement> enhancements = model.getData().stream().map(p -> (Enhancement) p.instance).collect(Collectors.toList());
+
+            ResultsController controller = loader.getController();
+            controller.setBarChartEnhancements(enhancements, numberOfTopics);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Stage stage = (Stage) runModelerBtn.getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
     }
 
     public void runBrowseBtn() throws IOException {
