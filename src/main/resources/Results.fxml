@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
@@ -8,41 +12,71 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TabPane prefHeight="372.0" prefWidth="572.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.ResultsController">
-    <Tab text="Bar Chart Enhancements">
-        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-            <BarChart fx:id="barChartEnhancements" layoutX="36.0" layoutY="21.0" prefHeight="300.0" legendVisible="false">
-                <xAxis>
-                    <CategoryAxis side="BOTTOM" />
-                </xAxis>
-                <yAxis>
-                    <NumberAxis side="LEFT" />
-                </yAxis>
-            </BarChart>
-        </AnchorPane>
-    </Tab>
-    <Tab text="Bar Chart Bugs">
-        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-            <BarChart fx:id="barChartBugs" layoutX="36.0" layoutY="21.0" prefHeight="300.0" legendVisible="false">
-                <xAxis>
-                    <CategoryAxis side="BOTTOM" />
-                </xAxis>
-                <yAxis>
-                    <NumberAxis side="LEFT" />
-                </yAxis>
-            </BarChart>
-        </AnchorPane>
-    </Tab>
-    <Tab text="Line Chart">
-        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-            <LineChart fx:id="LineChart" layoutX="36.0" layoutY="21.0" prefHeight="300.0">
-                <xAxis>
-                    <CategoryAxis side="BOTTOM" />
-                </xAxis>
-                <yAxis>
-                    <NumberAxis side="LEFT" />
-                </yAxis>
-            </LineChart>
-        </AnchorPane>
-    </Tab>
+<TabPane prefHeight="446.0" prefWidth="618.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.ResultsController">
+   <tabs>
+       <Tab text="Bar Chart Enhancements">
+          <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                     <BarChart fx:id="barChartEnhancements" prefHeight="300.0" BorderPane.alignment="CENTER">
+                         <xAxis>
+                             <CategoryAxis side="BOTTOM" />
+                         </xAxis>
+                         <yAxis>
+                             <NumberAxis side="LEFT" />
+                         </yAxis>
+                     </BarChart>
+               </center>
+            </BorderPane>
+          </content>
+       </Tab>
+       <Tab text="Bar Chart Bugs">
+          <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                     <BarChart fx:id="barChartBugs" legendVisible="false" prefHeight="300.0" BorderPane.alignment="CENTER">
+                         <xAxis>
+                             <CategoryAxis side="BOTTOM" />
+                         </xAxis>
+                         <yAxis>
+                             <NumberAxis side="LEFT" />
+                         </yAxis>
+                     </BarChart>
+               </center>
+            </BorderPane>
+          </content>
+       </Tab>
+       <Tab text="Line Chart Enhancements">
+          <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                     <LineChart fx:id="lineChartEnhancements" prefHeight="300.0" BorderPane.alignment="CENTER">
+                         <xAxis>
+                             <CategoryAxis side="BOTTOM" />
+                         </xAxis>
+                         <yAxis>
+                             <NumberAxis side="LEFT" />
+                         </yAxis>
+                     </LineChart>
+               </center>
+            </BorderPane>
+          </content>
+       </Tab>
+      <Tab text="Line Chart Bugs">
+        <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                  <LineChart fx:id="lineChartBugs" BorderPane.alignment="CENTER">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </LineChart>
+               </center>
+            </BorderPane>
+        </content>
+      </Tab>
+   </tabs>
 </TabPane>
