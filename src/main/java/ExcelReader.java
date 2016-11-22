@@ -18,7 +18,11 @@ public class ExcelReader {
     private List<Enhancement> enhancements = new ArrayList<Enhancement>();
 
     public ExcelReader(String fileName) throws IOException {
-        inputStream = new FileInputStream(new File(fileName));
+        this(new File(fileName));
+    }
+
+    public ExcelReader(File fileName) throws IOException {
+        inputStream = new FileInputStream(fileName);
         workbook = new XSSFWorkbook(inputStream);
         parse_input();
     }
