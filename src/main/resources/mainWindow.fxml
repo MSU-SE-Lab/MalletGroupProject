@@ -14,7 +14,7 @@
             <Label text="Number of topics to find:"/>
             <TextField maxWidth="50.0" promptText="5"/>
             <Separator orientation="VERTICAL" prefHeight="22.0" prefWidth="36.0" visible="false"/>
-            <Button fx:id="runModelerBtn" mnemonicParsing="false" onAction="#runCompileBtn" text="Run Modeler"/>
+            <Button fx:id="runModelerBtn" mnemonicParsing="false" onAction="#runModelerBtn" text="Run Modeler"/>
         </VBox>
     </center>
     <left>

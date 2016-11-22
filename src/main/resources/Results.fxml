@@ -32,7 +32,7 @@
     </Tab>
     <Tab text="Line Chart">
         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-            <LineChart id="LineChart" layoutX="36.0" layoutY="21.0" prefHeight="300.0">
+            <LineChart fx:id="LineChart" layoutX="36.0" layoutY="21.0" prefHeight="300.0">
                 <xAxis>
                     <CategoryAxis side="BOTTOM"/>
                 </xAxis>
