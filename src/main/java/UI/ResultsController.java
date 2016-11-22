@@ -2,7 +2,6 @@ package UI;
 
 import TopicModeling.Bug;
 import TopicModeling.Enhancement;
-import TopicModeling.Issue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,7 +11,6 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.XYChart;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -41,8 +39,8 @@ public class ResultsController implements Initializable {
 
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
 
-        for (int topic : topics) {
-            series.getData().add(new XYChart.Data<>(, topic));
+        for (int i = 0; i < topics.length; i++) {
+            series.getData().add(new XYChart.Data<>(String.valueOf(i), topics[i]));
         }
 
         barChartBugs.getData().add(series);
