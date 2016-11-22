@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="240.0" prefWidth="420.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PersonController">
+<BorderPane prefHeight="240.0" prefWidth="420.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.MainController">
     <center>
         <VBox alignment="CENTER" prefHeight="309.0" prefWidth="316.0" BorderPane.alignment="CENTER">
             <Label text="File Location:" />
@@ -16,7 +16,7 @@
             <Button fx:id="browseBtn" mnemonicParsing="false" onAction="#runBrowseBtn" text="Browse" />
             <Separator orientation="VERTICAL" prefHeight="29.0" prefWidth="97.0" visible="false" />
             <Label text="Number of topics to find:" />
-            <TextField fx:id="numberOfTopics" maxWidth="50.0" promptText="5" />
+            <TextField fx:id="numberOfTopicsText" maxWidth="50.0" promptText="5" />
             <Separator orientation="VERTICAL" prefHeight="22.0" prefWidth="36.0" visible="false" />
             <Button fx:id="runModelerBtn" mnemonicParsing="false" onAction="#runModelerBtn" text="Run Modeler" />
         </VBox>

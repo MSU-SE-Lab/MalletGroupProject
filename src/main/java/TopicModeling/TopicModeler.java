@@ -1,3 +1,5 @@
+package TopicModeling;
+
 import cc.mallet.pipe.*;
 import cc.mallet.topics.ParallelTopicModel;
 import cc.mallet.topics.TopicInferencer;
@@ -57,7 +59,6 @@ public class TopicModeler {
 
     private InstanceList buildPipe() throws URISyntaxException {
         List<Pipe> topicList = new ArrayList<>();
-        //topicList.add(new Target2Label());
         topicList.add(new CharSequenceLowercase());
         topicList.add(new CharSequence2TokenSequence());
         topicList.add(new TokenSequenceRemoveNonAlpha());

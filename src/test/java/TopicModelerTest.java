@@ -1,3 +1,6 @@
+import TopicModeling.ExcelReader;
+import TopicModeling.Issue;
+import TopicModeling.TopicModeler;
 import org.junit.Before;
 import org.junit.Test;
 

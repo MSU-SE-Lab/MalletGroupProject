@@ -1,3 +1,5 @@
+package TopicModeling;
+
 import java.util.Date;
 
 /**
@@ -27,7 +29,7 @@ public class Bug extends Issue {
 
     @Override
     public String toString() {
-        return "Bug{" +
+        return "TopicModeling.Bug{" +
                 "issueNumber=" + issueNumber +
                 " description='" + description +
                 "' timeCreated=" + timeCreated +

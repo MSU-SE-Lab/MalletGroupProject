@@ -1,3 +1,12 @@
+package UI;
+
+import TopicModeling.Bug;
+import TopicModeling.ExcelReader;
+import TopicModeling.Issue;
+import TopicModeling.TopicModeler;
+import cc.mallet.topics.ParallelTopicModel;
+import cc.mallet.topics.TopicAssignment;
+import cc.mallet.util.CommandOption;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,16 +20,20 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * @author root
  */
-public class PersonController {
+public class MainController {
     private File excelFile;
 
     @FXML
-    public TextField numberOfTopics;
+    public TextField numberOfTopicsText;
 
     @FXML
     private LineChart LineChart;
@@ -34,23 +47,27 @@ public class PersonController {
     @FXML
     private Button runModelerBtn;
 
-    @FXML
-    private BarChart barChartEnhancements;
-
     public void runModelerBtn() throws IOException {
-        ExcelReader excelReader = new ExcelReader(excelFile);
-        try {
-            TopicModeler topicModeler = new TopicModeler();
-            topicModeler.addIssueListThruPipe((List<Issue>)(List<?>)excelReader.getBugs());
-            topicModeler.model();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Parent root = FXMLLoader.load(getClass().getResource("Results.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../Results.fxml"));
+        Parent root = loader.load();
         Stage stage = (Stage) runModelerBtn.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
+
+        ExcelReader excelReader = new ExcelReader(excelFile);
+        try {
+            int numberOfTopics = (numberOfTopicsText.getText().isEmpty()) ? 5 : Integer.parseInt(numberOfTopicsText.getText());
+            TopicModeler topicModeler = new TopicModeler();
+            topicModeler.setNumTopics(numberOfTopics);
+            topicModeler.addIssueListThruPipe((List<Issue>) (List<?>) excelReader.getBugs());
+            ParallelTopicModel model = topicModeler.model();
+            List<Bug> bugs = model.getData().stream().map(p -> (Bug) p.instance).collect(Collectors.toList());
+
+            ResultsController controller = loader.getController();
+            controller.setBarChartBugs(bugs, numberOfTopics);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void runBrowseBtn() throws IOException {

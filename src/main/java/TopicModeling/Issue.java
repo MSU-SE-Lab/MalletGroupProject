@@ -1,3 +1,5 @@
+package TopicModeling;
+
 import cc.mallet.types.Instance;
 
 import java.util.Date;
