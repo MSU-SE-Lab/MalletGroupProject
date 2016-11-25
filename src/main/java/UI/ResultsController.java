@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -40,7 +40,7 @@ public class ResultsController implements Initializable {
         }
         barChartEnhancements.getData().add(series);
 
-        addTopicCheckboxes(topicNames, bceTopicList);
+        addTopicButtons(topicNames, bceTopicList);
     }
 
     void setBarChartBugs(List<Bug> bugs, int numberOfBugs, List<String> topicNames) {
@@ -53,13 +53,12 @@ public class ResultsController implements Initializable {
         }
         barChartBugs.getData().add(series);
 
-        addTopicCheckboxes(topicNames, bcbTopicList);
+        addTopicButtons(topicNames, bcbTopicList);
     }
 
-    private void addTopicCheckboxes(List<String> topicNames, VBox vBox) {
+    private void addTopicButtons(List<String> topicNames, VBox vBox) {
         topicNames.forEach(topic -> {
-            CheckBox button = new CheckBox(topic);
-            button.setSelected(true);
+            Button button = new Button(topic);
             button.setOnAction(e -> System.out.println(topic));
             vBox.getChildren().add(button);
         });
