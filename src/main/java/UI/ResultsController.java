@@ -1,22 +1,23 @@
 package UI;
 
-import TopicModeling.Issue;
 import TopicModeling.Bug;
 import TopicModeling.Enhancement;
-import TopicModeling.IssueFilter;
+import TopicModeling.Issue;
 import com.pixelduke.javafx.chart.DateAxis;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.*;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -64,37 +65,69 @@ public class ResultsController implements Initializable {
         topicNames.forEach(topic -> {
             Button button = new Button(topic);
             button.setOnAction(e -> {
-                Tab tab = new Tab(
-                        topic + (vBox == bceTopicList ? " - Enhancements" : " - Bugs")
-                );
-                tab.setClosable(true);
-                LineChart<Long, Number> lineChart = makeLineChart(issues, topicNames.indexOf(topic));
+                String newTabText = topic + (vBox == bceTopicList ? " - Enhancements" : " - Bugs");
+                tabPane.getSelectionModel().select(
+                        tabPane.getTabs().stream().filter(t -> t.getText().equals(newTabText)).findFirst()
+                                .orElseGet(() -> {
+                                    Tab tab = new Tab(newTabText);
+                                    tab.setClosable(true);
 
-                tab.setContent(lineChart);
-                tabPane.getTabs().add(tab);
-                tabPane.getSelectionModel().select(tab);
+                                    LineChart<Long, Number> lineChart;
+                                    if (issues.get(0) instanceof Bug) {
+                                        lineChart = makeBugsLineChart((List<Bug>) issues, topicNames.indexOf(topic));
+                                    } else {
+                                        lineChart = makeEnhancementsLineChart((List<Enhancement>) issues, topicNames.indexOf(topic));
+                                    }
+
+                                    tab.setContent(lineChart);
+                                    tabPane.getTabs().add(tab);
+                                    return tab;
+                                }));
             });
             vBox.getChildren().add(button);
         });
     }
 
-    private LineChart<Long, Number> makeLineChart(List<?> issues, int topic) {
+    private LineChart<Long, Number> makeEnhancementsLineChart(List<Enhancement> enhancements, int topic) {
         DateAxis xAxis = new DateAxis();
         LineChart<Long, Number> lineChart = new LineChart<>(xAxis, new NumberAxis());
 
         XYChart.Series<Long, Number> series = new XYChart.Series<>();
-        issues.stream()
-                .filter(issue -> ((Issue) issue).getTopic() == topic)
+        enhancements.stream()
+                .filter(enhancement -> enhancement.getTopic() == topic)
                 .collect(Collectors.groupingBy(
-                        issue -> DateUtils.round(((Issue) issue).getTimeCreated(), Calendar.MONTH),
-                        LinkedHashMap::new,
+                        enhancement -> DateUtils.round(enhancement.getTimeCreated(), Calendar.MONTH),
+                        HashMap::new,
                         Collectors.counting()
                 ))
-                .forEach((date, numIssues) -> {
-                    series.getData().add(new XYChart.Data<>(date.getTime(), numIssues));
-                });
+                .forEach((date, numEnhancements) ->
+                        series.getData().add(new XYChart.Data<>(date.getTime(), numEnhancements))
+                );
 
         lineChart.getData().add(series);
+        return lineChart;
+    }
+
+    private LineChart<Long, Number> makeBugsLineChart(List<Bug> bugs, int topic) {
+        DateAxis xAxis = new DateAxis();
+        LineChart<Long, Number> lineChart = new LineChart<>(xAxis, new NumberAxis());
+
+        Map<Bug.Severity, XYChart.Series<Long, Number>> seriesMap = new HashMap<>();
+        for (Bug.Severity severity : Bug.Severity.values()) {
+            seriesMap.put(severity, new XYChart.Series<>());
+        }
+        bugs.stream()
+                .filter(bug -> bug.getTopic() == topic)
+                .collect(Collectors.groupingBy(
+                        bug -> new ImmutablePair<>(bug.getSeverity(), DateUtils.round(bug.getTimeCreated(), Calendar.MONTH)),
+                        HashMap::new,
+                        Collectors.counting()
+                ))
+                .forEach((pair, numIssues) ->
+                        seriesMap.get(pair.left).getData().add(new XYChart.Data<>(pair.right.getTime(), numIssues))
+                );
+
+        lineChart.getData().addAll(seriesMap.values());
         return lineChart;
     }
 }

@@ -6,6 +6,10 @@ import java.util.Date;
  * Created by JacobAMason on 10/25/16.
  */
 public class Bug extends Issue {
+    public Severity getSeverity() {
+        return severityLevel;
+    }
+
     public enum Severity {
         enhancement, trivial, minor, normal, major, critical,
         blocker, none;
