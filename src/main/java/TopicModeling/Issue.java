@@ -29,4 +29,8 @@ public abstract class Issue extends Instance {
     public int getTopic() {
         return topic;
     }
+
+    public Date getTimeCreated() {
+        return timeCreated;
+    }
 }

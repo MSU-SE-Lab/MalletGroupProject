@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
-
-<TabPane prefHeight="446.0" prefWidth="618.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.112"
-         xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.ResultsController">
-    <Tab text="Bar Chart Enhancements">
+<?import javafx.scene.layout.*?>
+<TabPane fx:id="tabPane" prefHeight="446.0" prefWidth="618.0" tabClosingPolicy="ALL_TABS"
+         xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="UI.ResultsController">
+    <Tab closable="false" text="Bar Chart Enhancements">
         <BorderPane prefHeight="200.0" prefWidth="200.0">
             <left>
                 <VBox fx:id="bceTopicList" spacing="10">
-                    <padding><Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/></padding>
+                    <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
+                    </padding>
                 </VBox>
             </left>
             <center>
@@ -31,11 +29,13 @@
             </center>
         </BorderPane>
     </Tab>
-    <Tab text="Bar Chart Bugs">
+    <Tab closable="false" text="Bar Chart Bugs">
         <BorderPane prefHeight="200.0" prefWidth="200.0">
             <left>
                 <VBox fx:id="bcbTopicList" spacing="10">
-                    <padding><Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/></padding>
+                    <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
+                    </padding>
                 </VBox>
             </left>
             <center>
@@ -47,34 +47,6 @@
                         <NumberAxis side="LEFT"/>
                     </yAxis>
                 </BarChart>
-            </center>
-        </BorderPane>
-    </Tab>
-    <Tab text="Line Chart Enhancements">
-        <BorderPane prefHeight="200.0" prefWidth="200.0">
-            <center>
-                <LineChart fx:id="lineChartEnhancements" legendVisible="false" BorderPane.alignment="CENTER">
-                    <xAxis>
-                        <CategoryAxis side="BOTTOM"/>
-                    </xAxis>
-                    <yAxis>
-                        <NumberAxis side="LEFT"/>
-                    </yAxis>
-                </LineChart>
-            </center>
-        </BorderPane>
-    </Tab>
-    <Tab text="Line Chart Bugs">
-        <BorderPane prefHeight="200.0" prefWidth="200.0">
-            <center>
-                <LineChart fx:id="lineChartBugs" legendVisible="false" BorderPane.alignment="CENTER">
-                    <xAxis>
-                        <CategoryAxis side="BOTTOM"/>
-                    </xAxis>
-                    <yAxis>
-                        <NumberAxis side="LEFT"/>
-                    </yAxis>
-                </LineChart>
             </center>
         </BorderPane>
     </Tab>
