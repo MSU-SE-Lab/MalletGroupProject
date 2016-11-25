@@ -91,6 +91,7 @@ public class ResultsController implements Initializable {
     private LineChart<Long, Number> makeEnhancementsLineChart(List<Enhancement> enhancements, int topic) {
         DateAxis xAxis = new DateAxis();
         LineChart<Long, Number> lineChart = new LineChart<>(xAxis, new NumberAxis());
+        lineChart.setLegendVisible(false);
 
         XYChart.Series<Long, Number> series = new XYChart.Series<>();
         enhancements.stream()
@@ -114,8 +115,14 @@ public class ResultsController implements Initializable {
 
         Map<Bug.Severity, XYChart.Series<Long, Number>> seriesMap = new HashMap<>();
         for (Bug.Severity severity : Bug.Severity.values()) {
-            seriesMap.put(severity, new XYChart.Series<>());
+            if (severity == Bug.Severity.enhancement) {
+                continue;
+            }
+            XYChart.Series<Long, Number> series = new XYChart.Series<>();
+            series.setName(severity.toString());
+            seriesMap.put(severity, series);
         }
+
         bugs.stream()
                 .filter(bug -> bug.getTopic() == topic)
                 .collect(Collectors.groupingBy(
