@@ -10,7 +10,7 @@ public class UILoader extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-         Parent root = FXMLLoader.load(getClass().getResource("../mainWindow.fxml"));
+         Parent root = FXMLLoader.load(this.getClass().getResource("/mainWindow.fxml"));
 
          Scene scene = new Scene(root);
 

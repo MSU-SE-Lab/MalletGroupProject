@@ -43,8 +43,10 @@ public class MainController {
     private Button runModelerBtn;
 
     public void runModelerBtn() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../Results.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Results.fxml"));
         Parent root = loader.load();
+        Stage stage = (Stage) runModelerBtn.getScene().getWindow();
+        Scene scene = new Scene(root);
 
         ExcelReader excelReader = new ExcelReader(excelFile);
         try {
@@ -73,8 +75,6 @@ public class MainController {
             e.printStackTrace();
         }
 
-        Stage stage = (Stage) runModelerBtn.getScene().getWindow();
-        Scene scene = new Scene(root);
         stage.setScene(scene);
     }
 

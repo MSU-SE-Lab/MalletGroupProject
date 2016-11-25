@@ -31,14 +31,18 @@ public class TopicModeler extends ParallelTopicModel {
         issues.forEach(instances::addThruPipe);
     }
 
-    public String[] getTopicNames() {
-        String[] topicNames = new String[numTopics];
+    public List<String> getTopicNames() {
+        List<String> topicNames = new ArrayList<>(numTopics);
         ArrayList<TreeSet<IDSorter>> topicSortedWords = getSortedWords();
 
         for (int i = 0; i < numTopics; i++) {
             TreeSet<IDSorter> sortedWords = topicSortedWords.get(i);
-            IDSorter info = sortedWords.iterator().next();
-            topicNames[i] = getAlphabet().lookupObject(info.getID()).toString();
+            Iterator<IDSorter> iterator = sortedWords.iterator();
+            String topic;
+            do {
+                topic = getAlphabet().lookupObject(iterator.next().getID()).toString();
+            } while (topicNames.contains(topic) && iterator.hasNext());
+            topicNames.add(topic);
         }
 
         return topicNames;
