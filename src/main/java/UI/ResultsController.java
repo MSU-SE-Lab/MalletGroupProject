@@ -1,5 +1,6 @@
 package UI;
 
+import TopicModeling.Issue;
 import TopicModeling.Bug;
 import TopicModeling.Enhancement;
 import javafx.fxml.FXML;
@@ -30,30 +31,25 @@ public class ResultsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 
-    void setBarChartEnhancements(List<Enhancement> enhancements, int numberOfEnhancements, List<String> topicNames) {
-        int[] topics = new int[numberOfEnhancements];
-        enhancements.forEach(b -> topics[b.getTopic()]++);
-
-        XYChart.Series<String, Integer> series = new XYChart.Series<>();
-        for (int i = 0; i < topicNames.size(); i++) {
-            series.getData().add(new XYChart.Data<>(topicNames.get(i), topics[i]));
-        }
-        barChartEnhancements.getData().add(series);
-
+    void setBarChartEnhancements(List<Enhancement> enhancements, List<String> topicNames) {
+        setBarChartData(enhancements, topicNames, barChartEnhancements);
         addTopicButtons(topicNames, bceTopicList);
     }
 
-    void setBarChartBugs(List<Bug> bugs, int numberOfBugs, List<String> topicNames) {
-        int[] topics = new int[numberOfBugs];
-        bugs.forEach(b -> topics[b.getTopic()]++);
+    void setBarChartBugs(List<Bug> bugs, List<String> topicNames) {
+        setBarChartData(bugs, topicNames, barChartBugs);
+        addTopicButtons(topicNames, bcbTopicList);
+    }
+
+    private void setBarChartData(List<?> issues, List<String> topicNames, BarChart<String, Integer> barChart) {
+        int[] topics = new int[topicNames.size()];
+        issues.forEach(b -> topics[((Issue) b).getTopic()]++);
 
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
         for (int i = 0; i < topics.length; i++) {
             series.getData().add(new XYChart.Data<>(topicNames.get(i), topics[i]));
         }
-        barChartBugs.getData().add(series);
-
-        addTopicButtons(topicNames, bcbTopicList);
+        barChart.getData().add(series);
     }
 
     private void addTopicButtons(List<String> topicNames, VBox vBox) {

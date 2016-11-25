@@ -57,7 +57,7 @@ public class MainController {
             List<Bug> bugs = model.getData().stream().map(p -> (Bug) p.instance).collect(Collectors.toList());
 
             ResultsController controller = loader.getController();
-            controller.setBarChartBugs(bugs, numberOfTopics, topicModeler.getTopicNames());
+            controller.setBarChartBugs(bugs, topicModeler.getTopicNames());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,7 +70,7 @@ public class MainController {
             List<Enhancement> enhancements = model.getData().stream().map(p -> (Enhancement) p.instance).collect(Collectors.toList());
 
             ResultsController controller = loader.getController();
-            controller.setBarChartEnhancements(enhancements, numberOfTopics, topicModeler.getTopicNames());
+            controller.setBarChartEnhancements(enhancements, topicModeler.getTopicNames());
         } catch (Exception e) {
             e.printStackTrace();
         }
