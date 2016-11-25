@@ -1,6 +1,9 @@
 package TopicModeling;
 
-import org.apache.poi.xssf.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,8 +19,8 @@ import java.util.List;
 public class ExcelReader {
     private XSSFWorkbook workbook;
     private FileInputStream inputStream;
-    private List<Bug> bugs = new ArrayList<Bug>();
-    private List<Enhancement> enhancements = new ArrayList<Enhancement>();
+    private List<Bug> bugs = new ArrayList<>();
+    private List<Enhancement> enhancements = new ArrayList<>();
 
     public ExcelReader(String fileName) throws IOException {
         this(new File(fileName));
@@ -36,19 +39,6 @@ public class ExcelReader {
         super.finalize();
     }
 
-    public void parse_input() {
-        XSSFSheet sheet = workbook.getSheetAt(0);
-        for (int rowNum = 1; rowNum < sheet.getPhysicalNumberOfRows(); rowNum++) {
-            XSSFRow nextRow = sheet.getRow(rowNum);
-            int issueNumber = getIssueNumber(nextRow);
-            String issueDescription = getIssueDescription(nextRow);
-            String issueTypeOrSeverity = getTypeOrSeverity(nextRow);
-            Date issueCreationDate = getIssueCreationDate(nextRow);
-            Date issueResolveDate = getIssueResolveDate(nextRow);
-            addIssueToList(issueNumber, issueDescription, issueTypeOrSeverity, issueCreationDate, issueResolveDate);
-        }
-    }
-
     public List<Bug> getBugs() {
         return bugs;
     }
@@ -57,22 +47,38 @@ public class ExcelReader {
         return enhancements;
     }
 
-    private void addIssueToList(int issueNumber, String issueDescription, String issueTypeOrSeverity, Date issueCreationDate, Date issueResolveDate) {
-        if (Bug.Severity.getSeverityFromString(issueTypeOrSeverity) == Bug.Severity.enhancement) {
-            enhancements.add(new Enhancement(issueNumber, issueDescription, issueCreationDate, issueResolveDate));
-        } else {
-            bugs.add(new Bug(issueNumber, issueDescription, issueCreationDate, issueResolveDate, issueTypeOrSeverity));
+    private void parse_input() {
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        for (int rowNum = 1; rowNum < sheet.getPhysicalNumberOfRows(); rowNum++) {
+            XSSFRow nextRow = sheet.getRow(rowNum);
+            int issueNumber = getIssueNumber(nextRow);
+            if (issueNumber == -1) {
+                continue;
+            }
+            String issueDescription = getIssueDescription(nextRow);
+            String issueTypeOrSeverity = getTypeOrSeverity(nextRow);
+            Date issueCreationDate = getIssueCreationDate(nextRow);
+            Date issueResolveDate = getIssueResolveDate(nextRow);
+            addIssueToList(issueNumber, issueDescription, issueTypeOrSeverity, issueCreationDate, issueResolveDate);
         }
     }
 
-    private Date getIssueResolveDate(XSSFRow nextRow) {
-        Date issueResolveDate;
-        if (nextRow.getCell(4, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK).getCellType() == XSSFCell.CELL_TYPE_STRING) {
-            issueResolveDate = new Date();
+    private int getIssueNumber(XSSFRow nextRow) {
+        int issueNumber;
+        if (nextRow.getCell(0).getCellType() == XSSFCell.CELL_TYPE_STRING) {
+            issueNumber = -1;
         } else {
-            issueResolveDate = nextRow.getCell(4).getDateCellValue();
+            issueNumber = (int) nextRow.getCell(0).getNumericCellValue();
         }
-        return issueResolveDate;
+        return issueNumber;
+    }
+
+    private String getIssueDescription(XSSFRow nextRow) {
+        return nextRow.getCell(1, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK).toString();
+    }
+
+    private String getTypeOrSeverity(XSSFRow nextRow) {
+        return nextRow.getCell(2, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK).toString();
     }
 
     private Date getIssueCreationDate(XSSFRow nextRow) {
@@ -85,21 +91,21 @@ public class ExcelReader {
         return issueCreationDate;
     }
 
-    private String getTypeOrSeverity(XSSFRow nextRow) {
-        return nextRow.getCell(2, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK).toString();
-    }
-
-    private String getIssueDescription(XSSFRow nextRow) {
-        return nextRow.getCell(1, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK).toString();
-    }
-
-    private int getIssueNumber(XSSFRow nextRow) {
-        int issueNumber;
-        if (nextRow.getCell(0).getCellType() == XSSFCell.CELL_TYPE_STRING) {
-            issueNumber = -1;
+    private Date getIssueResolveDate(XSSFRow nextRow) {
+        Date issueResolveDate;
+        if (nextRow.getCell(4, XSSFRow.MissingCellPolicy.CREATE_NULL_AS_BLANK).getCellType() == XSSFCell.CELL_TYPE_STRING) {
+            issueResolveDate = new Date();
         } else {
-            issueNumber = (int)nextRow.getCell(0).getNumericCellValue();
+            issueResolveDate = nextRow.getCell(4).getDateCellValue();
         }
-        return issueNumber;
+        return issueResolveDate;
+    }
+
+    private void addIssueToList(int issueNumber, String issueDescription, String issueTypeOrSeverity, Date issueCreationDate, Date issueResolveDate) {
+        if (Bug.Severity.getSeverityFromString(issueTypeOrSeverity) == Bug.Severity.enhancement) {
+            enhancements.add(new Enhancement(issueNumber, issueDescription, issueCreationDate, issueResolveDate));
+        } else {
+            bugs.add(new Bug(issueNumber, issueDescription, issueCreationDate, issueResolveDate, issueTypeOrSeverity));
+        }
     }
 }

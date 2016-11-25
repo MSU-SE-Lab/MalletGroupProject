@@ -118,8 +118,13 @@ public class ResultsController implements Initializable {
         }
         bugs.stream()
                 .filter(bug -> bug.getTopic() == topic)
+                .peek(bug -> {
+                    if (bug.getIssueNumber() == -1) {
+                        System.out.println(bug.toString());
+                    }
+                })
                 .collect(Collectors.groupingBy(
-                        bug -> new ImmutablePair<>(bug.getSeverity(), DateUtils.round(bug.getTimeCreated(), Calendar.MONTH)),
+                        bug -> new ImmutablePair<>(bug.getSeverity(), DateUtils.round(bug.getTimeCreated() == null ? new Date(0) : bug.getTimeCreated(), Calendar.MONTH)),
                         HashMap::new,
                         Collectors.counting()
                 ))

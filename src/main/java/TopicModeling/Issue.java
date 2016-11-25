@@ -14,6 +14,7 @@ public abstract class Issue extends Instance {
     protected Date timeResolved;
     private int topic;
 
+
     public Issue(int issueNumber, String description, Date timeCreated, Date timeResolved) {
         super(description, null, null, null);
         this.issueNumber = issueNumber;
@@ -22,15 +23,19 @@ public abstract class Issue extends Instance {
         this.timeResolved = timeResolved;
     }
 
+    public int getIssueNumber() {
+        return issueNumber;
+    }
+
+    public Date getTimeCreated() {
+        return timeCreated;
+    }
+
     public void assignTopic(int topic) {
         this.topic = topic;
     }
 
     public int getTopic() {
         return topic;
-    }
-
-    public Date getTimeCreated() {
-        return timeCreated;
     }
 }
