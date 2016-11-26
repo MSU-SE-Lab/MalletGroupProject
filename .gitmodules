@@ -1,0 +1,3 @@
+[submodule "src/main/java/com/pixelduke/javafx/chart"]
+	path = src/main/java/com/pixelduke/javafx/chart
+	url = https://github.com/dukke/FXCharts.git
