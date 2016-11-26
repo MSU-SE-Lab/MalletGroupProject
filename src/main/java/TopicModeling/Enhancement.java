@@ -1,3 +1,5 @@
+package TopicModeling;
+
 import java.util.Date;
 
 /**
@@ -10,7 +12,7 @@ public class Enhancement extends Issue {
 
     @Override
     public String toString() {
-        return "Enhancement{" +
+        return "TopicModeling.Enhancement{" +
                 "issueNumber=" + issueNumber +
                 " description='" + description +
                 "' timeCreated=" + timeCreated +

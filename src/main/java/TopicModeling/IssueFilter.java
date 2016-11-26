@@ -1,3 +1,5 @@
+package TopicModeling;
+
 import cc.mallet.topics.TopicAssignment;
 
 import java.util.Date;

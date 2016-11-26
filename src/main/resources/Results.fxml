@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.*?>
+<TabPane fx:id="tabPane" prefHeight="446.0" prefWidth="618.0" tabClosingPolicy="ALL_TABS"
+         xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="UI.ResultsController">
+    <Tab closable="false" text="Bar Chart Enhancements">
+        <BorderPane prefHeight="200.0" prefWidth="200.0">
+            <left>
+                <VBox fx:id="bceTopicList" spacing="10">
+                    <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
+                    </padding>
+                </VBox>
+            </left>
+            <center>
+                <BarChart fx:id="barChartEnhancements" legendVisible="false" BorderPane.alignment="CENTER">
+                    <xAxis>
+                        <CategoryAxis side="BOTTOM"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis side="LEFT"/>
+                    </yAxis>
+                </BarChart>
+            </center>
+        </BorderPane>
+    </Tab>
+    <Tab closable="false" text="Bar Chart Bugs">
+        <BorderPane prefHeight="200.0" prefWidth="200.0">
+            <left>
+                <VBox fx:id="bcbTopicList" spacing="10">
+                    <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
+                    </padding>
+                </VBox>
+            </left>
+            <center>
+                <BarChart fx:id="barChartBugs" legendVisible="false" BorderPane.alignment="CENTER">
+                    <xAxis>
+                        <CategoryAxis side="BOTTOM"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis side="LEFT"/>
+                    </yAxis>
+                </BarChart>
+            </center>
+        </BorderPane>
+    </Tab>
+</TabPane>

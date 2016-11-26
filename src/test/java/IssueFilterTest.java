@@ -1,3 +1,4 @@
+import TopicModeling.*;
 import cc.mallet.topics.ParallelTopicModel;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +19,7 @@ public class IssueFilterTest {
 
     @Before
     public void setUp() throws Exception {
-        topicModeler = new TopicModeler();
+        topicModeler = new TopicModeler(5);
         excelReader = new ExcelReader("Firefox_MasterFile_4214Fall2016.xlsx");
     }
 
@@ -48,6 +49,10 @@ public class IssueFilterTest {
         ParallelTopicModel model = topicModeler.model();
         model.printTopWords(System.out, 5, false);
 
-        IssueFilter.hasTopic(model.getData().stream(), 0).forEach(p -> System.out.println(p.instance));
+        for (int i = 0; i < 5; i++) {
+            System.out.println("Topic " + i);
+            IssueFilter.hasTopic(model.getData().stream(), i).forEach(p -> System.out.println(p.instance));
+            System.out.println();
+        }
     }
 }
