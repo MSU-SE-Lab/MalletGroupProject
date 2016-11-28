@@ -10,7 +10,6 @@ import java.util.*;
 
 public class TopicModeler extends ParallelTopicModel {
     private InstanceList instances;
-    private int numTopics = 5;
 
     public TopicModeler(int numTopics) throws URISyntaxException {
         super(numTopics);
