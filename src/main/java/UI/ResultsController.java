@@ -56,7 +56,15 @@ public class ResultsController implements Initializable {
 
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
         for (int i = 0; i < topics.length; i++) {
-            series.getData().add(new XYChart.Data<>(topicNames.get(i), topics[i]));
+            XYChart.Data<String, Integer> data = new XYChart.Data<>(topicNames.get(i), topics[i]);
+            int color = (i % 8) + 1;
+            data.nodeProperty().addListener((ov, oldNode, newNode) -> {
+                // http://stackoverflow.com/questions/15233858/
+                if (newNode != null) {
+                    newNode.setStyle(String.format("-fx-bar-fill: CHART_COLOR_%d;", color));
+                }
+            });
+            series.getData().add(data);
         }
         barChart.getData().add(series);
     }
