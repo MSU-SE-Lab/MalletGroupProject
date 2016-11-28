@@ -23,7 +23,7 @@
                         <CategoryAxis side="BOTTOM"/>
                     </xAxis>
                     <yAxis>
-                        <NumberAxis side="LEFT"/>
+                        <NumberAxis side="LEFT" forceZeroInRange="false"/>
                     </yAxis>
                 </BarChart>
             </center>
@@ -44,7 +44,7 @@
                         <CategoryAxis side="BOTTOM"/>
                     </xAxis>
                     <yAxis>
-                        <NumberAxis side="LEFT"/>
+                        <NumberAxis side="LEFT" forceZeroInRange="false"/>
                     </yAxis>
                 </BarChart>
             </center>
