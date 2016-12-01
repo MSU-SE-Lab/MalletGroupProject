@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="240.0" prefWidth="420.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.MainController">
+    <center>
+        <VBox alignment="CENTER" prefHeight="309.0" prefWidth="316.0" BorderPane.alignment="CENTER">
+            <Label text="File Location:" />
+            <TextField fx:id="fileText" promptText="Please Select an xlsx File" />
+            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="39.0" visible="false" />
+            <Button fx:id="browseBtn" mnemonicParsing="false" onAction="#runBrowseBtn" text="Browse" />
+            <Separator orientation="VERTICAL" prefHeight="29.0" prefWidth="97.0" visible="false" />
+            <Label text="Number of topics to find:" />
+            <TextField fx:id="numberOfTopicsText" maxWidth="50.0" promptText="5" />
+            <Separator orientation="VERTICAL" prefHeight="22.0" prefWidth="36.0" visible="false" />
+            <Button fx:id="runModelerBtn" mnemonicParsing="false" onAction="#runModelerBtn" text="Run Modeler" />
+        </VBox>
+    </center>
+    <left>
+        <Separator prefHeight="97.0" prefWidth="26.0" visible="false" BorderPane.alignment="CENTER" />
+    </left>
+    <right>
+        <Separator prefHeight="89.0" prefWidth="26.0" visible="false" BorderPane.alignment="CENTER" />
+    </right>
+</BorderPane>
